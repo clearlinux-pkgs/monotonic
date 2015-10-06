@@ -4,7 +4,7 @@
 #
 Name     : monotonic
 Version  : 0.4
-Release  : 6
+Release  : 7
 URL      : https://pypi.python.org/packages/source/m/monotonic/monotonic-0.4.tar.gz
 Source0  : https://pypi.python.org/packages/source/m/monotonic/monotonic-0.4.tar.gz
 Summary  : An implementation of time.monotonic() for Python 2 & < 3.3
