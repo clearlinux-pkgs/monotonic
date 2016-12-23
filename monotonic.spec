@@ -4,7 +4,7 @@
 #
 Name     : monotonic
 Version  : 1.2
-Release  : 17
+Release  : 18
 URL      : http://pypi.debian.net/monotonic/monotonic-1.2.tar.gz
 Source0  : http://pypi.debian.net/monotonic/monotonic-1.2.tar.gz
 Summary  : An implementation of time.monotonic() for Python 2 & < 3.3
