@@ -4,7 +4,7 @@
 #
 Name     : monotonic
 Version  : 1.2
-Release  : 18
+Release  : 19
 URL      : http://pypi.debian.net/monotonic/monotonic-1.2.tar.gz
 Source0  : http://pypi.debian.net/monotonic/monotonic-1.2.tar.gz
 Summary  : An implementation of time.monotonic() for Python 2 & < 3.3
@@ -33,13 +33,15 @@ python components for the monotonic package.
 
 %build
 export LANG=C
+export SOURCE_DATE_EPOCH=1484553755
 python2 setup.py build -b py2
 python3 setup.py build -b py3
 
 %install
+export SOURCE_DATE_EPOCH=1484553755
 rm -rf %{buildroot}
-python2 -tt setup.py build -b py2 install --root=%{buildroot}
-python3 -tt setup.py build -b py3 install --root=%{buildroot}
+python2 -tt setup.py build -b py2 install --root=%{buildroot} --force
+python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
 
 %files
 %defattr(-,root,root,-)
