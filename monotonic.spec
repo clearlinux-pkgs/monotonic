@@ -6,7 +6,7 @@
 #
 Name     : monotonic
 Version  : 1.3
-Release  : 21
+Release  : 22
 URL      : http://pypi.debian.net/monotonic/monotonic-1.3.tar.gz
 Source0  : http://pypi.debian.net/monotonic/monotonic-1.3.tar.gz
 Source99 : http://pypi.debian.net/monotonic/monotonic-1.3.tar.gz.asc
