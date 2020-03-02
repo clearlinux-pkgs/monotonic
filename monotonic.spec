@@ -6,31 +6,40 @@
 #
 Name     : monotonic
 Version  : 1.5
-Release  : 28
+Release  : 29
 URL      : https://files.pythonhosted.org/packages/19/c1/27f722aaaaf98786a1b338b78cf60960d9fe4849825b071f4e300da29589/monotonic-1.5.tar.gz
 Source0  : https://files.pythonhosted.org/packages/19/c1/27f722aaaaf98786a1b338b78cf60960d9fe4849825b071f4e300da29589/monotonic-1.5.tar.gz
-Source99 : https://files.pythonhosted.org/packages/19/c1/27f722aaaaf98786a1b338b78cf60960d9fe4849825b071f4e300da29589/monotonic-1.5.tar.gz.asc
+Source1  : https://files.pythonhosted.org/packages/19/c1/27f722aaaaf98786a1b338b78cf60960d9fe4849825b071f4e300da29589/monotonic-1.5.tar.gz.asc
 Summary  : An implementation of time.monotonic() for Python 2 & < 3.3
 Group    : Development/Tools
 License  : Apache-2.0
-Requires: monotonic-python3
-Requires: monotonic-license
-Requires: monotonic-python
+Requires: monotonic-license = %{version}-%{release}
+Requires: monotonic-python = %{version}-%{release}
+Requires: monotonic-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
-BuildRequires : pbr
-BuildRequires : pip
-BuildRequires : python3-dev
-BuildRequires : setuptools
 
 %description
 monotonic
-        ~~~~~~~~~
-        
-        This module provides a ``monotonic()`` function which returns the
-        value (in fractional seconds) of a clock which never goes backwards.
-        
-        On Python 3.3 or newer, ``monotonic`` will be an alias of
-        ``time.monotonic`` from the standard library. On older versions,
+~~~~~~~~~
+
+This module provides a ``monotonic()`` function which returns the
+value (in fractional seconds) of a clock which never goes backwards.
+
+On Python 3.3 or newer, ``monotonic`` will be an alias of
+``time.monotonic`` from the standard library. On older versions,
+it will fall back to an equivalent implementation:
+
++------------------+----------------------------------------+
+| Linux, BSD, AIX  | ``clock_gettime(3)``                   |
++------------------+----------------------------------------+
+| Windows          | ``GetTickCount`` or ``GetTickCount64`` |
++------------------+----------------------------------------+
+| OS X             | ``mach_absolute_time``                 |
++------------------+----------------------------------------+
+
+If no suitable implementation exists for the current platform,
+attempting to import this module (or to import from it) will
+cause a ``RuntimeError`` exception to be raised.
 
 %package license
 Summary: license components for the monotonic package.
@@ -43,7 +52,7 @@ license components for the monotonic package.
 %package python
 Summary: python components for the monotonic package.
 Group: Default
-Requires: monotonic-python3
+Requires: monotonic-python3 = %{version}-%{release}
 
 %description python
 python components for the monotonic package.
@@ -53,6 +62,7 @@ python components for the monotonic package.
 Summary: python3 components for the monotonic package.
 Group: Default
 Requires: python3-core
+Provides: pypi(monotonic)
 
 %description python3
 python3 components for the monotonic package.
@@ -60,20 +70,29 @@ python3 components for the monotonic package.
 
 %prep
 %setup -q -n monotonic-1.5
+cd %{_builddir}/monotonic-1.5
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1532241564
-python3 setup.py build -b py3
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1583174055
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+export MAKEFLAGS=%{?_smp_mflags}
+python3 setup.py build
 
 %install
+export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/monotonic
-cp LICENSE %{buildroot}/usr/share/doc/monotonic/LICENSE
-python3 -tt setup.py build -b py3 install --root=%{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/monotonic
+cp %{_builddir}/monotonic-1.5/LICENSE %{buildroot}/usr/share/package-licenses/monotonic/c700a8b9312d24bdc57570f7d6a131cf63d89016
+python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
@@ -82,8 +101,8 @@ echo ----[ mark ]----
 %defattr(-,root,root,-)
 
 %files license
-%defattr(-,root,root,-)
-/usr/share/doc/monotonic/LICENSE
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/monotonic/c700a8b9312d24bdc57570f7d6a131cf63d89016
 
 %files python
 %defattr(-,root,root,-)

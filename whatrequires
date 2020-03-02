@@ -1,0 +1,10 @@
+# This file contains recursive sources that require this package
+fasteners
+futurist
+glance
+gnocchiclient
+gsutil
+humanfriendly
+oslo.log
+oslo.messaging
+tenacity
