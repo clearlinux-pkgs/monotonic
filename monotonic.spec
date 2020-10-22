@@ -6,7 +6,7 @@
 #
 Name     : monotonic
 Version  : 1.5
-Release  : 31
+Release  : 32
 URL      : https://files.pythonhosted.org/packages/19/c1/27f722aaaaf98786a1b338b78cf60960d9fe4849825b071f4e300da29589/monotonic-1.5.tar.gz
 Source0  : https://files.pythonhosted.org/packages/19/c1/27f722aaaaf98786a1b338b78cf60960d9fe4849825b071f4e300da29589/monotonic-1.5.tar.gz
 Source1  : https://files.pythonhosted.org/packages/19/c1/27f722aaaaf98786a1b338b78cf60960d9fe4849825b071f4e300da29589/monotonic-1.5.tar.gz.asc
@@ -20,26 +20,13 @@ BuildRequires : buildreq-distutils3
 
 %description
 monotonic
-~~~~~~~~~
-
-This module provides a ``monotonic()`` function which returns the
-value (in fractional seconds) of a clock which never goes backwards.
-
-On Python 3.3 or newer, ``monotonic`` will be an alias of
-``time.monotonic`` from the standard library. On older versions,
-it will fall back to an equivalent implementation:
-
-+------------------+----------------------------------------+
-| Linux, BSD, AIX  | ``clock_gettime(3)``                   |
-+------------------+----------------------------------------+
-| Windows          | ``GetTickCount`` or ``GetTickCount64`` |
-+------------------+----------------------------------------+
-| OS X             | ``mach_absolute_time``                 |
-+------------------+----------------------------------------+
-
-If no suitable implementation exists for the current platform,
-attempting to import this module (or to import from it) will
-cause a ``RuntimeError`` exception to be raised.
+        ~~~~~~~~~
+        
+        This module provides a ``monotonic()`` function which returns the
+        value (in fractional seconds) of a clock which never goes backwards.
+        
+        On Python 3.3 or newer, ``monotonic`` will be an alias of
+        ``time.monotonic`` from the standard library. On older versions,
 
 %package license
 Summary: license components for the monotonic package.
@@ -77,12 +64,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1583174055
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1603395623
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
